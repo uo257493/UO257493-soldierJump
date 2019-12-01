@@ -63,7 +63,7 @@ class GameLayer extends Layer {
 
 
 
-        // Jugador se cae
+        // Jugador se cae del mapa visible, o se sale por los laterales
         if ( this.jugador.x < 0 || this.jugador.x > this.anchoMapa || this.scrollY + 320 < this.jugador.y + this.jugador.alto/2){
             this.iniciar();
         }
@@ -284,7 +284,6 @@ class GameLayer extends Layer {
                 this.scrollY = this.jugador.y - 320 * 0.3;
 
         }
-        console.log(this.scrollY + " bbbeesita " + this.jugador.y)
 
     }
 
