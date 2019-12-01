@@ -18,7 +18,7 @@ class GameLayer extends Layer {
         this.pad = new Pad(480*0.14,320*0.8);
 
         this.ps = null;
-        this.scrollX = 0;
+        this.scrollY = 0;
         this.bloques = [];
         this.bloquesHielo = [];
         this.recolectables = [];
@@ -64,7 +64,7 @@ class GameLayer extends Layer {
 
 
         // Jugador se cae
-        if ( this.jugador.y > 480 ){
+        if ( this.jugador.x < 0 || this.jugador.x > this.anchoMapa ){
             this.iniciar();
         }
 
@@ -273,18 +273,12 @@ class GameLayer extends Layer {
     }
 
     calcularScroll(){
-        // limite izquierda
-        if ( this.jugador.x > 480 * 0.3) {
-            if (this.jugador.x - this.scrollX < 480 * 0.3) {
-                this.scrollX = this.jugador.x - 480 * 0.3;
-            }
+        // limite abajo
+        if ( this.jugador.y > 320 * 0.3) {
+            this.scrollY = this.jugador.y - 320 * 0.3;
+
         }
-        // limite derecha
-        if ( this.jugador.x < this.anchoMapa - 480 * 0.3 ) {
-            if (this.jugador.x - this.scrollX > 480 * 0.7) {
-                this.scrollX = this.jugador.x - 480 * 0.7;
-            }
-        }
+        console.log(this.scrollY + " bbbeesita " + this.jugador.y)
 
     }
 
@@ -294,31 +288,31 @@ class GameLayer extends Layer {
 
         this.fondo.dibujar();
         for (var i=0; i < this.bloques.length; i++){
-            this.bloques[i].dibujar(this.scrollX);
+            this.bloques[i].dibujar(this.scrollY);
         }
         for (var i=0; i < this.bloquesHielo.length; i++){
-            this.bloquesHielo[i].dibujar(this.scrollX);
+            this.bloquesHielo[i].dibujar(this.scrollY);
         }
 
         for (var i=0; i < this.recolectables.length; i++){
-            this.recolectables[i].dibujar(this.scrollX);
+            this.recolectables[i].dibujar(this.scrollY);
         }
 
-        this.copa.dibujar(this.scrollX);
+        this.copa.dibujar(this.scrollY);
         for (var i=0; i < this.disparosJugador.length; i++) {
-            this.disparosJugador[i].dibujar(this.scrollX);
+            this.disparosJugador[i].dibujar(this.scrollY);
         }
         for (var i=0; i < this.disparosEnemigo.length; i++) {
             if(this.disparosEnemigo[i] != null)
-                this.disparosEnemigo[i].dibujar(this.scrollX);
+                this.disparosEnemigo[i].dibujar(this.scrollY);
         }
 
         if(this.ps != null)
-            this.ps.dibujar(this.scrollX);
+            this.ps.dibujar(this.scrollY);
 
-        this.jugador.dibujar(this.scrollX);
+        this.jugador.dibujar(this.scrollY);
         for (var i=0; i < this.enemigos.length; i++){
-            this.enemigos[i].dibujar(this.scrollX);
+            this.enemigos[i].dibujar(this.scrollY);
         }
 
 

@@ -11,8 +11,8 @@ class Recolectable extends Modelo {
         console.log("actualizada");
     }
 
-    dibujar (scrollX){
-        scrollX = scrollX || 0;
-        this.animacion.dibujar(this.x - scrollX, this.y);
+    dibujar (scrollY){
+        scrollY = scrollY || 0;
+        this.animacion.dibujar(this.x , this.y - scrollY);
     }
 }

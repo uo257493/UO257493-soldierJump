@@ -20,11 +20,11 @@ class Modelo {
 
 
 
-    dibujar (scrollX){
-        scrollX = scrollX || 0;
+    dibujar (scrollY){
+        scrollY = scrollY || 0;
         contexto.drawImage(this.imagen,
-            this.x - this.imagen.width/2 - scrollX,
-            this.y - this.imagen.height/2);
+            this.x - this.imagen.width/2 ,
+            this.y - this.imagen.height/2 - scrollY);
     }
 
 
