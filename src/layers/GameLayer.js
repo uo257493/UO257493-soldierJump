@@ -64,7 +64,7 @@ class GameLayer extends Layer {
 
 
         // Jugador se cae
-        if ( this.jugador.x < 0 || this.jugador.x > this.anchoMapa ){
+        if ( this.jugador.x < 0 || this.jugador.x > this.anchoMapa || this.scrollY + 320 < this.jugador.y + this.jugador.alto/2){
             this.iniciar();
         }
 
@@ -274,8 +274,14 @@ class GameLayer extends Layer {
 
     calcularScroll(){
         // limite abajo
-        if ( this.jugador.y > 320 * 0.3) {
+       /* if ( this.jugador.y > 320 * 0.3) {
             this.scrollY = this.jugador.y - 320 * 0.3;
+
+        }*/
+
+        if ( this.jugador.y < this.altoMapa - 320 * 0.3 ) {
+            if (this.jugador.y - this.scrollY < 320 * 0.3)
+                this.scrollY = this.jugador.y - 320 * 0.3;
 
         }
         console.log(this.scrollY + " bbbeesita " + this.jugador.y)
@@ -377,6 +383,8 @@ class GameLayer extends Layer {
             var texto = fichero.responseText;
             var lineas = texto.split('\n');
             this.anchoMapa = (lineas[0].length-1) * 40;
+            this.altoMapa = (lineas.length-1) * 32;
+            this.scrollY = this.altoMapa *0.6;
             for (var i = 0; i < lineas.length; i++){
                 var linea = lineas[i];
 
