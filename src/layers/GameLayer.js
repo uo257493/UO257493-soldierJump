@@ -31,16 +31,16 @@ class GameLayer extends Layer {
 
         this.fondoPuntos =
             new Fondo(imagenes.icono_puntos, 480*0.85,320*0.05);
-        this.fondoPuntosRecolectables =
-            new Fondo(imagenes.icono_recolectable, 480*0.75,320*0.05);
+        this.fondoVidas =
+            new Fondo(imagenes.icono_vidas, 480*0.75,320*0.05);
 
 
         this.disparosJugador = []
         this.disparosEnemigo = []
         this.puntos = new Texto(0,480*0.9,320*0.07 );
-        this.puntosRecolectables = new Texto(0,480*0.8,320*0.07 );
-        this.cargarMapa("res/"+nivelActual+".txt");
 
+        this.cargarMapa("res/"+nivelActual+".txt");
+        this.vidas = new Texto(this.jugador.vida,480*0.8,320*0.07 );
         if(this.puntoSalva.activo){
             this.jugador.x = this.puntoSalva.x;
             this.jugador.y = this.puntoSalva.y;
@@ -81,7 +81,7 @@ class GameLayer extends Layer {
         }
 
         for (var i=0; i < this.enemigos.length; i++){
-            if(this.enemigos[i] != null && this.enemigos[i].puedeDisparar() && this.enemigos[i].estado != estados.muriendo){
+            if(this.enemigos[i] != null && this.enemigos[i].puedeDisparar() && this.enemigos[i].estado == estados.moviendo){
                 var nDisparo = this.enemigos[i].disparar();
                 if(nDisparo != null) {
                     this.espacio.agregarCuerpoDinamico(nDisparo);
@@ -173,11 +173,16 @@ class GameLayer extends Layer {
 
         // colisiones
         for (var i=0; i < this.enemigos.length; i++){
-            if(this.jugador.colisiona(this.enemigos[i]) && !this.enemigos[i].puedeDisparar())
-                this.iniciar();
+            if(this.jugador.colisiona(this.enemigos[i]) && !this.enemigos[i].puedeDisparar()){
+
+
+                     this.iniciar();
+
+             }
             if ( this.jugador.colisiona(this.enemigos[i]) &&
                 (!this.jugador.saltaSobre(this.enemigos[i])&& this.enemigos[i].puedeDisparar())){
-                this.iniciar();
+
+                    this.iniciar();
             }
 
         }
@@ -250,7 +255,13 @@ class GameLayer extends Layer {
             if (this.disparosEnemigo[i] != null &&
                 this.disparosEnemigo[i].colisiona(this.jugador)) {
 
-                this.iniciar();
+                this.espacio
+                    .eliminarCuerpoDinamico(this.disparosEnemigo[i]);
+                this.disparosEnemigo.splice(i, 1);
+                i = i-1;
+                this.jugador.vida--;
+                if(this.jugador.vida <= 0)
+                    this.iniciar();
             }
 
         }
@@ -315,9 +326,10 @@ class GameLayer extends Layer {
 
         // HUD
         this.fondoPuntos.dibujar();
-        this.fondoPuntosRecolectables.dibujar();
+        this.fondoVidas.dibujar();
         this.puntos.dibujar();
-        this.puntosRecolectables.dibujar();
+        this.vidas.valor = this.jugador.vida;
+        this.vidas.dibujar();
 
         if ( !this.pausa && entrada == entradas.pulsaciones) {
             this.botonDisparo.dibujar();
@@ -403,8 +415,16 @@ class GameLayer extends Layer {
                 this.espacio.agregarCuerpoDinamico(this.nube);
                 break;
 
-            case "E":
+            case "D":
                 var enemigo = new Enemigo(x,y);
+
+                enemigo.y = enemigo.y - enemigo.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.enemigos.push(enemigo);
+                this.espacio.agregarCuerpoDinamico(enemigo);
+                break;
+            case "I":
+                var enemigo = new EnemigoIzquierda(x,y);
 
                 enemigo.y = enemigo.y - enemigo.alto/2;
                 // modificación para empezar a contar desde el suelo

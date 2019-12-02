@@ -11,9 +11,9 @@ var imagenes = {
     jugador : "res/jugador.png",
     fondo : "res/fondo.png",
     enemigo_derecha : "res/enemigo_derecha.png",
-    enemigo_corazon : "res/enemigo2.png",
-    enemigo_corazon_movimiento : "res/enemigo2_movimiento.png",
+    enemigo_izquierda : "res/enemigo_izquierda.png",
     enemigo_movimiento : "res/enemigo_idle_derecha.png",
+    enemigo_izquierda_movimiento : "res/enemigo_idle_izquierda.png",
     disparo_soldado : "res/bullet.png",
     disparo_enemigo : "res/disparo_enemigo.png",
     icono_puntos : "res/icono_puntos.png",
@@ -24,7 +24,7 @@ var imagenes = {
     jugador_saltando_derecha : "res/jugador_saltando_derecha.png",
     jugador_saltando_izquierda : "res/jugador_saltando_izquierda.png",
     enemigo_morir : "res/enemigo_morir_derecha.png",
-    enemigo2_morir : "res/enemigo2_morir.png",
+    enemigo_morir_izquierda : "res/enemigo_morir_izquierda.png",
     bloque_tierra : "res/plataforma.png",
     bloque_hielo : "res/bloque_hielo.png",
     bloque_metal : "res/bloque_metal.png",
@@ -41,6 +41,9 @@ var imagenes = {
     mensaje_perder : "res/mensaje_perder.png",
     punto_salva: "res/punto_salva.png",
     avion: "res/avion.png",
+    avion_derecha: "res/avion_derecha.png",
+    avion_idle_derecha: "res/avion_idle_derecha.png",
+    avion_idle_izquierda: "res/avion_idle_izquierda.png",
 
 };
 

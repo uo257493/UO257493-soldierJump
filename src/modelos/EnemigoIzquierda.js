@@ -1,7 +1,7 @@
-class Enemigo extends EnemigoBase {
+class EnemigoIzquierda extends EnemigoBase {
 
     constructor(x, y) {
-        super(imagenes.enemigo_derecha, x, y, imagenes.enemigo_movimiento,imagenes.enemigo_morir, 0)
+        super(imagenes.enemigo_izquierda, x, y, imagenes.enemigo_izquierda_movimiento,imagenes.enemigo_morir_izquierda, 0)
         this.cadenciaDisparo = 70;
         this.tiempoDisparo = 15;
     }
@@ -11,7 +11,7 @@ class Enemigo extends EnemigoBase {
         if ( this.tiempoDisparo == 0) {
             // reiniciar Cadencia
             this.tiempoDisparo = this.cadenciaDisparo;
-            var disparo = new DisparoEnemigo(this.x, this.y, 8);
+            var disparo = new DisparoEnemigo(this.x, this.y, -7);
             if ( this.vx <0 ){
                 disparo.vx = disparo.vx*-1; //invertir
             }

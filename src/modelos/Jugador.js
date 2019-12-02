@@ -3,7 +3,7 @@ class Jugador extends Modelo {
     constructor(x, y) {
         super(imagenes.jugador , x, y)
         this.estado = estados.moviendo;
-
+        this.vida = 3;
         this.orientacion = orientaciones.derecha;
 
         this.vx = 0; // velocidadX

@@ -1,6 +1,6 @@
 class DisparoEnemigo extends DisparoAbs {
 
-    constructor(x, y) {
-        super(x, y, imagenes.disparo_enemigo, 8);
+    constructor(x, y, velocidad) {
+        super(x, y, imagenes.disparo_enemigo,  velocidad);
     }
 }
