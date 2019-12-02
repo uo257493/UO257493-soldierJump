@@ -5,9 +5,9 @@ class EnemigoBase extends Modelo {
 
         this.estado = estados.moviendo;
         this.aMover = new Animacion(animacionMovimiento,
-            this.ancho, this.alto, 6, 3);
+            this.ancho, this.alto, 6, 10);
         this.aMorir = new Animacion(animacionMorir,
-            this.ancho,this.alto,6,8, this.finAnimacionMorir.bind(this));
+            this.ancho,this.alto,6,10, this.finAnimacionMorir.bind(this));
 
         // Ref a la animación actual
         this.animacion = this.aMover;

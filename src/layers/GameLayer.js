@@ -74,7 +74,7 @@ class GameLayer extends Layer {
             if ( this.disparosJugador[i] != null &&
                 this.disparosJugador[i].vx == 0){
 
-                this.espacio
+               this.espacio
                     .eliminarCuerpoDinamico(this.disparosJugador[i]);
                 this.disparosJugador.splice(i, 1);
             }
@@ -117,14 +117,13 @@ class GameLayer extends Layer {
         }
 
 
-        console.log("disparosJugador: "+this.disparosJugador.length);
         // Eliminar disparos fuera de pantalla
         for (var i=0; i < this.disparosJugador.length; i++){
             if ( this.disparosJugador[i] != null &&
                 !this.disparosJugador[i].estaEnPantalla()){
 
                 this.espacio
-                    .eliminarCuerpoDinamico(this.disparosJugador[i]);
+                   .eliminarCuerpoDinamico(this.disparosJugador[i]);
 
                 this.disparosJugador.splice(i, 1);
                 i=i-1;
@@ -154,8 +153,11 @@ class GameLayer extends Layer {
         for (var i=0; i < this.enemigos.length; i++){
             this.enemigos[i].actualizar();
         }
+
+        console.log("Longitud "+this.disparosJugador.length)
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].actualizar();
+
         }
         for (var i=0; i < this.aviones.length; i++){
             this.aviones[i].actualizar();
@@ -180,17 +182,7 @@ class GameLayer extends Layer {
 
         }
 
-        // colisiones con el punto de salva
-        if(this.ps != null){
-            if(this.jugador.colisiona(this.ps)){
-                this.puntoSalva.activo = true;
-                this.puntoSalva.x = this.ps.x;
-                this.puntoSalva.y = this.ps.y;
-                this.espacio.eliminarCuerpoDinamico(this.ps);
-                this.ps = null
 
-            }
-        }
 
 
         // colisiones derretir hielo
@@ -316,6 +308,7 @@ class GameLayer extends Layer {
 
         this.jugador.dibujar(this.scrollY);
         for (var i=0; i < this.enemigos.length; i++){
+            console.log("aqui estoy dibu")
             this.enemigos[i].dibujar(this.scrollY);
         }
 
@@ -338,10 +331,13 @@ class GameLayer extends Layer {
     procesarControles( ){
         // disparar
         if (  controles.disparo ){
+
             var nuevoDisparo = this.jugador.disparar();
             if ( nuevoDisparo != null ) {
+
                 this.espacio.agregarCuerpoDinamico(nuevoDisparo);
                 this.disparosJugador.push(nuevoDisparo);
+                console.log("ESTA DISSSS "+ this.disparosJugador.length)
 
             }
 

@@ -5,8 +5,8 @@ class DisparoAbs extends Modelo {
         this.vx = velocidadDisparo;
     }
 
-    actualizar (){
 
-    }
+    actualizar(){
+            }
 
 }

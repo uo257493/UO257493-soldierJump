@@ -9,10 +9,10 @@ class Modelo {
     }
 
     estaEnPantalla (){
-        if ( (this.x - gameLayer.scrollX) - this.ancho/2 <= 480 &&
-            (this.x - gameLayer.scrollX) + this.ancho/2 >= 0 &&
-            this.y - this.alto/2 <= 320 &&
-            this.y + this.alto/2 >= 0 ){
+        if (this.x  - this.ancho/2 <= 480 &&
+            this.x  + this.ancho/2 >= 0 &&
+            (this.y - this.alto/2 - gameLayer.scrollY)<= 320 &&
+            (this.y + this.alto/2 - gameLayer.scrollY) >= 0 ){
             return true;
         }
         return false;
