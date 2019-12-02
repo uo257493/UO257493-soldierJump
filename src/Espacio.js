@@ -4,6 +4,7 @@ class Espacio {
         this.gravedad = gravedad;
         this.dinamicos = [];
         this.estaticos = [];
+        this.noGravedad = [];
     }
 
     actualizar(){
@@ -25,6 +26,18 @@ class Espacio {
             this.moverIzquierda(i);
             this.moverArriba(i);
             this.moverAbajo(i);
+
+        }
+
+        for( var i=0; i < this.noGravedad.length; i++){
+
+           this.noGravedad[i].vy = 0
+
+            this.noGravedad[i].choqueAbajo = false;
+
+
+            this.moverDerechaNG(i);
+            this.moverIzquierdaNG(i);
 
         }
 
@@ -75,6 +88,8 @@ class Espacio {
             this.dinamicos[i].vy = movimientoPosible;
         }
     }
+
+
 
 
     moverArriba(i){
@@ -165,6 +180,48 @@ class Espacio {
         }
     }
 
+    moverDerechaNG(i){
+        if ( this.noGravedad[i].vx > 0){
+            var movimientoPosible = this.noGravedad[i].vx;
+            // El mejor "idealmente" vx partimos de ese
+
+            for(var j=0; j < this.estaticos.length; j++){
+                var derechaNG
+                    = this.noGravedad[i].x + this.noGravedad[i].ancho/2;
+                var arribaNG
+                    = this.noGravedad[i].y - this.noGravedad[i].alto/2;
+                var abajoNG
+                    = this.noGravedad[i].y + this.noGravedad[i].alto/2;
+                var izquierdaEstatico
+                    = this.estaticos[j].x - this.estaticos[j].ancho/2;
+                var arribaEstatico
+                    = this.estaticos[j].y - this.estaticos[j].alto/2;
+                var abajoEstatico
+                    = this.estaticos[j].y + this.estaticos[j].alto/2;
+
+                // Alerta!, Elemento estático en la trayectoria.
+                if ( (derechaNG + this.noGravedad[i].vx) >= izquierdaEstatico
+                    && derechaNG <= izquierdaEstatico
+                    && arribaEstatico < abajoNG
+                    && abajoEstatico > arribaNG){
+
+                    // Comprobamos si la distancia al estático es menor
+                    // que nuestro movimientoPosible actual
+                    if (movimientoPosible >= izquierdaEstatico - derechaNG){
+                        // La distancia es MENOR que nuestro movimiento posible
+                        // Tenemos que actualizar el movimiento posible a uno menor
+                        movimientoPosible = izquierdaEstatico - derechaNG ;
+                    }
+
+                }
+
+            }
+            // Ya se han comprobado todos los estáticos
+            this.noGravedad[i].x = this.noGravedad[i].x + movimientoPosible;
+            this.noGravedad[i].vx = movimientoPosible;
+        }
+    }
+
     moverIzquierda(i){
 
 // Izquierda
@@ -210,8 +267,58 @@ class Espacio {
 
     }
 
+
+    moverIzquierdaNG(i){
+
+// Izquierda
+        if ( this.noGravedad[i].vx < 0){
+            var movimientoPosible = this.noGravedad[i].vx;
+            // El mejor "idealmente" vx partimos de ese
+
+            for(var j=0; j < this.estaticos.length; j++){
+                var izquierdaNG
+                    = this.noGravedad[i].x - this.noGravedad[i].ancho/2;
+                var arribaNG
+                    = this.noGravedad[i].y - this.noGravedad[i].alto/2;
+                var abajoNG
+                    = this.noGravedad[i].y + this.noGravedad[i].alto/2;
+                var derechaEstatico
+                    = this.estaticos[j].x + this.estaticos[j].ancho/2;
+                var arribaEstatico
+                    = this.estaticos[j].y - this.estaticos[j].alto/2;
+                var abajoEstatico
+                    = this.estaticos[j].y + this.estaticos[j].alto/2;
+
+                // Alerta!, Elemento estático en la trayectoria.
+                if ( (izquierdaNG + this.noGravedad[i].vx) <= derechaEstatico
+                    && izquierdaNG >= derechaEstatico
+                    && arribaEstatico < abajoNG
+                    && abajoEstatico > arribaNG ){
+
+                    // Comprobamos si la distancia al estático es mayor
+                    // que nuestro movimientoPosible actual
+                    if (movimientoPosible <= derechaEstatico - izquierdaNG ){
+                        // La distancia es MAYOR que nuestro movimiento posible
+                        // Tenemos que actualizar el movimiento posible a uno mayor
+                        movimientoPosible = derechaEstatico - izquierdaNG ;
+                    }
+
+                }
+            }
+
+            // Ya se han comprobado todos los estaticos
+            this.noGravedad[i].x = this.noGravedad[i].x + movimientoPosible;
+            this.noGravedad[i].vx = movimientoPosible;
+        }
+
+    }
+
     agregarCuerpoDinamico(modelo){
         this.dinamicos.push(modelo);
+    }
+
+    agregarCuerpoSinGravedad(modelo){
+        this.noGravedad.push(modelo);
     }
 
     agregarCuerpoEstatico(modelo){
@@ -234,4 +341,11 @@ class Espacio {
         }
     }
 
+    eliminarCuerpoSinGravedad(modelo){
+        for (var i = 0; i < this.noGravedad.length; i++) {
+            if (this.noGravedad[i] == modelo) {
+                this.noGravedad.splice(i, 1);
+            }
+        }
+    }
 }

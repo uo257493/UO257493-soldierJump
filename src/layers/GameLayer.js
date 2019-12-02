@@ -21,6 +21,7 @@ class GameLayer extends Layer {
         this.scrollY = 0;
         this.bloques = [];
         this.bloquesHielo = [];
+        this.aviones = [];
         this.recolectables = [];
 
         this.fondo = new Fondo(imagenes.fondo_2,480*0.5,320*0.5);
@@ -52,7 +53,7 @@ class GameLayer extends Layer {
 
 
 
-        if ( this.copa.colisiona(this.jugador)){
+        if ( this.nube.colisiona(this.jugador)){
             nivelActual++;
             this.puntoSalva.activo = false;
             if (nivelActual > nivelMaximo){
@@ -156,6 +157,9 @@ class GameLayer extends Layer {
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].actualizar();
         }
+        for (var i=0; i < this.aviones.length; i++){
+            this.aviones[i].actualizar();
+        }
         for (var i=0; i < this.recolectables.length; i++){
             this.recolectables[i].actualizar();
         }
@@ -207,15 +211,7 @@ class GameLayer extends Layer {
         }
 
 
-        // colisiones con recolectables
-        for (var i=0; i < this.recolectables.length; i++){
-            if ( this.jugador.colisiona(this.recolectables[i])){
-                this.espacio.eliminarCuerpoDinamico(this.recolectables[i]);
-                this.recolectables.splice(i, 1);
-                i--;
-                this.puntosRecolectables.valor ++;
-            }
-        }
+
 
         // colisiones , Salto del jugador sobre enemigos que pueden disparar
         for (var j=0; j < this.enemigos.length; j++){
@@ -299,11 +295,14 @@ class GameLayer extends Layer {
             this.bloquesHielo[i].dibujar(this.scrollY);
         }
 
+        for (var i=0; i < this.aviones.length; i++){
+            this.aviones[i].dibujar(this.scrollY);
+        }
         for (var i=0; i < this.recolectables.length; i++){
             this.recolectables[i].dibujar(this.scrollY);
         }
 
-        this.copa.dibujar(this.scrollY);
+        this.nube.dibujar(this.scrollY);
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].dibujar(this.scrollY);
         }
@@ -402,10 +401,10 @@ class GameLayer extends Layer {
     cargarObjetoMapa(simbolo, x, y){
         switch(simbolo) {
             case "C":
-                this.copa = new Bloque(imagenes.copa, x,y);
-                this.copa.y = this.copa.y - this.copa.alto/2;
+                this.nube = new Bloque(imagenes.cloud, x,y);
+                this.nube.y = this.nube.y - this.nube.alto/2;
                 // modificación para empezar a contar desde el suelo
-                this.espacio.agregarCuerpoDinamico(this.copa);
+                this.espacio.agregarCuerpoDinamico(this.nube);
                 break;
 
             case "E":
@@ -452,10 +451,10 @@ class GameLayer extends Layer {
                 this.espacio.agregarCuerpoEstatico(bloque);
                 break;
             case "A":
-                var pus = new PuntoSalva(imagenes.punto_salva, x,y);
-                pus.y = pus.y - pus.alto/2;
-                this.ps = pus;
-                this.espacio.agregarCuerpoDinamico(this.ps);
+                var av = new Avion(x,y);
+                av.y = av.y - av.alto/2;
+                this.aviones.push(av);
+                this.espacio.agregarCuerpoEstatico(av);
                 break;
         }
     }

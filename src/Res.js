@@ -29,7 +29,7 @@ var imagenes = {
     bloque_hielo : "res/bloque_hielo.png",
     bloque_metal : "res/bloque_metal.png",
     bloque_fondo_muro : "res/bloque_fondo_muro.png",
-    copa : "res/nube.png",
+    cloud : "res/nube.png",
     pad :"res/pad.png",
     boton_disparo : "res/boton_disparo.png",
     boton_salto : "res/boton_salto.png",
@@ -40,6 +40,7 @@ var imagenes = {
     mensaje_ganar : "res/mensaje_ganar.png",
     mensaje_perder : "res/mensaje_perder.png",
     punto_salva: "res/punto_salva.png",
+    avion: "res/avion.png",
 
 };
 
