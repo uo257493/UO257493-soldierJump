@@ -454,7 +454,7 @@ class GameLayer extends Layer {
                 this.espacio.agregarCuerpoEstatico(bloque);
                 break;
             case "F":
-                var recolectable = new Recolectable(x,y, imagenes.icono_recolectable, false, true);
+                var recolectable = new Recolectable(x,y, imagenes.icono_furor, false, true);
                 recolectable.y = recolectable.y - recolectable.alto/2;
                 // modificación para empezar a contar desde el suelo
                 this.recolectables.push(recolectable);

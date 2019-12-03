@@ -5,7 +5,7 @@ class Jugador extends Modelo {
         this.estado = estados.moviendo;
         this.vida = 3;
         this.orientacion = orientaciones.derecha;
-        this.vidaFuror = 40;
+        this.vidaFuror = 50;
         this.vx = 0; // velocidadX
         this.vy = 0; // velocidadY
         this.yDeFuror = 0;
@@ -109,7 +109,6 @@ class Jugador extends Modelo {
                 this.desactivarFuror();
             }
             this.restarFuror();
-            console.log("Iteracion "+ this.vidaFuror + " altura " + this.y)
         }
 
     }
