@@ -5,10 +5,10 @@ class Jugador extends Modelo {
         this.estado = estados.moviendo;
         this.vida = 3;
         this.orientacion = orientaciones.derecha;
-
+        this.vidaFuror = 40;
         this.vx = 0; // velocidadX
         this.vy = 0; // velocidadY
-
+        this.yDeFuror = 0;
         // Disparo
         this.cadenciaDisparo = 24;
         this.tiempoDisparo = 0;
@@ -32,66 +32,85 @@ class Jugador extends Modelo {
         this.aDispararIzquierda = new Animacion(imagenes.soldado_disparar_izquierda,
             this.ancho,this.alto,1,10,this.finAnimacionDisparar.bind(this));
 
+        this.furor = new Animacion(imagenes.furor, this.ancho, this.alto, 6, 4);
 
 
         this.animacion = this.aIdleDerecha;
     }
 
     actualizar(){
-        this.animacion.actualizar();
+        if(this.estado != estados.furor) {
+            this.animacion.actualizar();
 
-        // ¿Esta en el aire?
-        if (this.choqueAbajo == true){
-            this.enElAire = false;
-        } else {
-            this.enElAire = true;
-        }
+            // ¿Esta en el aire?
+            if (this.choqueAbajo == true) {
+                this.enElAire = false;
+            } else {
+                this.enElAire = true;
+            }
 
-        // Establecer orientación
-        if ( this.vx > 0 ){
-            this.orientacion = orientaciones.derecha;
-        }
-        if ( this.vx < 0 ){
-            this.orientacion = orientaciones.izquierda;
-        }
+            // Establecer orientación
+            if (this.vx > 0) {
+                this.orientacion = orientaciones.derecha;
+            }
+            if (this.vx < 0) {
+                this.orientacion = orientaciones.izquierda;
+            }
 
-        switch (this.estado){
-            case estados.disparando:
-                if (this.orientacion == orientaciones.derecha) {
-                    this.animacion = this.aDispararDerecha;
-                }
-                if (this.orientacion == orientaciones.izquierda) {
-                    this.animacion = this.aDispararIzquierda;
-                }
-                break;
-            case estados.moviendo:
-                if ( this.vx != 0 ) {
+            switch (this.estado) {
+                case estados.disparando:
                     if (this.orientacion == orientaciones.derecha) {
-                        this.animacion = this.aCorriendoDerecha;
+                        this.animacion = this.aDispararDerecha;
                     }
                     if (this.orientacion == orientaciones.izquierda) {
-                        this.animacion = this.aCorriendoIzquierda;
+                        this.animacion = this.aDispararIzquierda;
                     }
-                }
-                if ( this.vx == 0){
-                    if (this.orientacion == orientaciones.derecha) {
-                        this.animacion = this.aIdleDerecha;
+                    break;
+                case estados.furor:
+                    this.animacion = this.furor;
+                    break;
+                case estados.moviendo:
+                    if (this.vx != 0) {
+                        if (this.orientacion == orientaciones.derecha) {
+                            this.animacion = this.aCorriendoDerecha;
+                        }
+                        if (this.orientacion == orientaciones.izquierda) {
+                            this.animacion = this.aCorriendoIzquierda;
+                        }
                     }
-                    if (this.orientacion == orientaciones.izquierda) {
-                        this.animacion = this.aIdleIzquierda;
+                    if (this.vx == 0) {
+                        if (this.orientacion == orientaciones.derecha) {
+                            this.animacion = this.aIdleDerecha;
+                        }
+                        if (this.orientacion == orientaciones.izquierda) {
+                            this.animacion = this.aIdleIzquierda;
+                        }
                     }
-                }
-                break;
+                    break;
+            }
+
+
+            // Tiempo Disparo
+            if (this.tiempoDisparo > 0) {
+                this.tiempoDisparo--;
+            }
         }
+        if(this.estado == estados.furor){
+            this.animacion = this.furor;
+            if(this.y > 100)
+            {
 
+                this.yDeFuror -=7;
+                this.y = this.yDeFuror;
 
+            }
+            else{
 
-
-        // Tiempo Disparo
-        if ( this.tiempoDisparo > 0 ) {
-            this.tiempoDisparo--;
+                this.desactivarFuror();
+            }
+            this.restarFuror();
+            console.log("Iteracion "+ this.vidaFuror + " altura " + this.y)
         }
-
 
     }
 
@@ -114,7 +133,7 @@ class Jugador extends Modelo {
 
     disparar(){
 
-        if ( this.tiempoDisparo == 0) {
+        if ( this.tiempoDisparo == 0 && this.estado != estados.furor) {
             // reiniciar Cadencia
             this.estado = estados.disparando;
             this.tiempoDisparo = this.cadenciaDisparo;
@@ -134,6 +153,20 @@ class Jugador extends Modelo {
         this.estado = estados.moviendo;
     }
 
+    activarFuror(){
+        this.yDeFuror = this.y;
+        this.estado = estados.furor;
+    }
+    desactivarFuror(){
+        this.estado = estados.moviendo;
+        this.animacion = this.aIdleDerecha;
+    }
+    restarFuror(){
+    this.vidaFuror--;
+    if(this.vidaFuror == 0){
+        this.desactivarFuror();
+    }
+    }
 
     dibujar (scrollY){
         scrollY = scrollY || 0;

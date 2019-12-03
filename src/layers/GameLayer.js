@@ -154,16 +154,12 @@ class GameLayer extends Layer {
             this.enemigos[i].actualizar();
         }
 
-        console.log("Longitud "+this.disparosJugador.length)
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].actualizar();
 
         }
         for (var i=0; i < this.aviones.length; i++){
             this.aviones[i].actualizar();
-        }
-        for (var i=0; i < this.recolectables.length; i++){
-            this.recolectables[i].actualizar();
         }
         for (var i=0; i < this.disparosEnemigo.length; i++) {
             if(this.disparosEnemigo[i] != null)
@@ -173,13 +169,13 @@ class GameLayer extends Layer {
 
         // colisiones
         for (var i=0; i < this.enemigos.length; i++){
-            if(this.jugador.colisiona(this.enemigos[i]) && !this.enemigos[i].puedeDisparar()){
+            if(this.jugador.colisiona(this.enemigos[i]) && !this.enemigos[i].puedeDisparar()&& this.jugador.estado != estados.furor){
 
 
                      this.iniciar();
 
              }
-            if ( this.jugador.colisiona(this.enemigos[i]) &&
+            if ( this.jugador.colisiona(this.enemigos[i]) && this.jugador.estado != estados.furor &&
                 (!this.jugador.saltaSobre(this.enemigos[i])&& this.enemigos[i].puedeDisparar())){
 
                     this.iniciar();
@@ -187,7 +183,14 @@ class GameLayer extends Layer {
 
         }
 
-
+    for(var i=0; i< this.recolectables.length; i++){
+        if(this.recolectables[i] != null && this.recolectables[i].esFuror && this.jugador.colisiona(this.recolectables[i])){
+            this.jugador.activarFuror();
+            this.espacio.eliminarCuerpoDinamico(this.recolectables[i]);
+            this.recolectables.splice(i, 1);
+            i--;
+        }
+    }
 
 
         // colisiones derretir hielo
@@ -253,7 +256,7 @@ class GameLayer extends Layer {
         // colisiones , disparoEnemigo - Jugador
         for (var i=0; i < this.disparosEnemigo.length; i++){
             if (this.disparosEnemigo[i] != null &&
-                this.disparosEnemigo[i].colisiona(this.jugador)) {
+                this.disparosEnemigo[i].colisiona(this.jugador) && this.jugador.estado != estados.furor) {
 
                 this.espacio
                     .eliminarCuerpoDinamico(this.disparosEnemigo[i]);
@@ -319,7 +322,6 @@ class GameLayer extends Layer {
 
         this.jugador.dibujar(this.scrollY);
         for (var i=0; i < this.enemigos.length; i++){
-            console.log("aqui estoy dibu")
             this.enemigos[i].dibujar(this.scrollY);
         }
 
@@ -349,7 +351,6 @@ class GameLayer extends Layer {
 
                 this.espacio.agregarCuerpoDinamico(nuevoDisparo);
                 this.disparosJugador.push(nuevoDisparo);
-                console.log("ESTA DISSSS "+ this.disparosJugador.length)
 
             }
 
@@ -452,8 +453,8 @@ class GameLayer extends Layer {
                 this.bloques.push(bloque);
                 this.espacio.agregarCuerpoEstatico(bloque);
                 break;
-            case "R":
-                var recolectable = new Recolectable(x,y);
+            case "F":
+                var recolectable = new Recolectable(x,y, imagenes.icono_recolectable, false, true);
                 recolectable.y = recolectable.y - recolectable.alto/2;
                 // modificación para empezar a contar desde el suelo
                 this.recolectables.push(recolectable);
