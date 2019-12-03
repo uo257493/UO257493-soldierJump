@@ -1,13 +1,13 @@
 class EnemigoBase extends Modelo {
 
-    constructor(imagenIni, x, y, animacionMovimiento, animacionMorir, vxInte) {
+    constructor(imagenIni, x, y, animacionMovimiento, animacionMorir, vxInte, framesMover, framesMorir) {
         super(imagenIni, x, y)
 
         this.estado = estados.moviendo;
         this.aMover = new Animacion(animacionMovimiento,
-            this.ancho, this.alto, 6, 10);
+            this.ancho, this.alto, 6, framesMover);
         this.aMorir = new Animacion(animacionMorir,
-            this.ancho,this.alto,6,10, this.finAnimacionMorir.bind(this));
+            this.ancho,this.alto,6,framesMorir, this.finAnimacionMorir.bind(this));
 
         // Ref a la animación actual
         this.animacion = this.aMover;
@@ -43,6 +43,10 @@ class EnemigoBase extends Modelo {
             }
         }
 
+    }
+
+    tieneCanon(boo){
+        return boo;
     }
 
     dibujar (scrollY){

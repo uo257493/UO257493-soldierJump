@@ -1,7 +1,7 @@
 class Enemigo extends EnemigoBase {
 
     constructor(x, y) {
-        super(imagenes.enemigo_derecha, x, y, imagenes.enemigo_movimiento,imagenes.enemigo_morir, 0)
+        super(imagenes.enemigo_derecha, x, y, imagenes.enemigo_movimiento,imagenes.enemigo_morir, 0, 10, 10)
         this.cadenciaDisparo = 70;
         this.tiempoDisparo = 15;
     }

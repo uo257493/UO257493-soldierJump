@@ -1,7 +1,7 @@
-class EnemigoIzquierda extends EnemigoBase {
+class EnemigoCanonIzq extends EnemigoBase {
 
     constructor(x, y) {
-        super(imagenes.enemigo_izquierda, x, y, imagenes.enemigo_izquierda_movimiento,imagenes.enemigo_morir_izquierda, 0, 10, 10)
+        super(imagenes.enemigo_canon_izquierda, x, y, imagenes.enemigo_canon_izquierda_movimiento,imagenes.enemigo_canon_morir_izquierda, 0, 7, 6)
         this.cadenciaDisparo = 70;
         this.tiempoDisparo = 15;
     }
@@ -11,7 +11,7 @@ class EnemigoIzquierda extends EnemigoBase {
         if ( this.tiempoDisparo == 0) {
             // reiniciar Cadencia
             this.tiempoDisparo = this.cadenciaDisparo;
-            var disparo = new DisparoEnemigo(this.x, this.y, -7);
+            var disparo = new DisparoCañon(this.x, this.y, -5);
             if ( this.vx <0 ){
                 disparo.vx = disparo.vx*-1; //invertir
             }
@@ -24,7 +24,11 @@ class EnemigoIzquierda extends EnemigoBase {
     }
 
     puedeDisparar() {
-        return super.puedeDisparar(true);
+        return super.puedeDisparar(false);
+    }
+
+    tieneCanon(){
+        return super.tieneCanon(true);
     }
 
     actualizar(){

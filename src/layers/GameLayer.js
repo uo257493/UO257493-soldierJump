@@ -37,6 +37,7 @@ class GameLayer extends Layer {
 
         this.disparosJugador = []
         this.disparosEnemigo = []
+        this.disparosCanon = []
         this.puntos = new Texto(0,480*0.9,320*0.07 );
 
         this.cargarMapa("res/"+nivelActual+".txt");
@@ -86,6 +87,14 @@ class GameLayer extends Layer {
                 if(nDisparo != null) {
                     this.espacio.agregarCuerpoDinamico(nDisparo);
                     this.disparosEnemigo.push(nDisparo);
+                }
+            }
+
+            if(this.enemigos[i] != null && this.enemigos[i].tieneCanon() && this.enemigos[i].estado == estados.moviendo){
+                var nDisparo = this.enemigos[i].disparar();
+                if(nDisparo != null && nDisparo.estaEnPantalla()) {
+                    this.espacio.agregarCuerpoDinamico(nDisparo);
+                    this.disparosCanon.push(nDisparo);
                 }
             }
         }
@@ -164,6 +173,12 @@ class GameLayer extends Layer {
         for (var i=0; i < this.disparosEnemigo.length; i++) {
             if(this.disparosEnemigo[i] != null)
                 this.disparosEnemigo[i].actualizar();
+
+        }
+
+        for (var i=0; i < this.disparosCanon.length; i++) {
+            if(this.disparosCanon[i] != null)
+                this.disparosCanon[i].actualizar();
 
         }
 
@@ -269,6 +284,23 @@ class GameLayer extends Layer {
 
         }
 
+        // colisiones , cañon - plataforma
+        for (var i=0; i < this.disparosCanon.length; i++){
+           for(var j = 0; j < this.bloques.length; j++){
+               if(this.disparosCanon[i] != null && this.bloques[j] != null){
+                   if(this.disparosCanon[i].saltaSobre(this.bloques[j])){
+                       this.espacio
+                           .eliminarCuerpoEstatico(this.bloques[j]);
+                       this.bloques.splice(j, 1);
+                       this.espacio
+                           .eliminarCuerpoDinamico(this.disparosCanon[i]);
+                       this.disparosCanon.splice(i, 1);
+
+
+                   }
+               }
+           }
+        }
 
 
 
@@ -315,6 +347,11 @@ class GameLayer extends Layer {
         for (var i=0; i < this.disparosEnemigo.length; i++) {
             if(this.disparosEnemigo[i] != null)
                 this.disparosEnemigo[i].dibujar(this.scrollY);
+        }
+
+        for (var i=0; i < this.disparosCanon.length; i++) {
+            if(this.disparosCanon[i] != null)
+                this.disparosCanon[i].dibujar(this.scrollY);
         }
 
         if(this.ps != null)
@@ -433,7 +470,15 @@ class GameLayer extends Layer {
                 this.espacio.agregarCuerpoDinamico(enemigo);
                 break;
             case "K":
-                var enemigoC = new EnemigoCorazon(x,y);
+                var enemigoC = new EnemigoCanonDcha(x,y);
+
+                enemigoC.y = enemigoC.y - enemigoC.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.enemigos.push(enemigoC);
+                this.espacio.agregarCuerpoDinamico(enemigoC);
+                break;
+            case "N":
+                var enemigoC = new EnemigoCanonIzq(x,y);
 
                 enemigoC.y = enemigoC.y - enemigoC.alto/2;
                 // modificación para empezar a contar desde el suelo
