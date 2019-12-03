@@ -81,6 +81,18 @@ class GameLayer extends Layer {
             }
         }
 
+        // Eliminar disparos cañon sin velocidad
+        for (var i=0; i < this.disparosCanon.length; i++){
+            if ( this.disparosCanon[i] != null &&
+                this.disparosCanon[i].vx == 0){
+
+                this.espacio
+                    .eliminarCuerpoDinamico(this.disparosCanon[i]);
+                this.disparosCanon.splice(i, 1);
+            }
+        }
+
+
         for (var i=0; i < this.enemigos.length; i++){
             if(this.enemigos[i] != null && this.enemigos[i].puedeDisparar() && this.enemigos[i].estado == estados.moviendo){
                 var nDisparo = this.enemigos[i].disparar();
@@ -135,6 +147,19 @@ class GameLayer extends Layer {
                    .eliminarCuerpoDinamico(this.disparosJugador[i]);
 
                 this.disparosJugador.splice(i, 1);
+                i=i-1;
+            }
+        }
+
+        // Eliminar disparos cañon fuera de pantalla
+        for (var i=0; i < this.disparosCanon.length; i++){
+            if ( this.disparosCanon[i] != null &&
+                !this.disparosCanon[i].estaEnPantalla()){
+
+                this.espacio
+                    .eliminarCuerpoDinamico(this.disparosCanon[i]);
+
+                this.disparosCanon.splice(i, 1);
                 i=i-1;
             }
         }
