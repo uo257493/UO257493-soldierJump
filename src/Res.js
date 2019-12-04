@@ -39,6 +39,7 @@ var imagenes = {
     bloque_hielo : "res/bloque_hielo.png",
     bloque_metal : "res/bloque_metal.png",
     bloque_fondo_muro : "res/bloque_fondo_muro.png",
+    bloque_pincel : "res/bloque_pincel.png",
     cloud : "res/nube.png",
     pad :"res/pad.png",
     boton_disparo : "res/boton_disparo.png",

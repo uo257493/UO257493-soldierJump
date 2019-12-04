@@ -459,7 +459,7 @@ class GameLayer extends Layer {
 
         if(controles.dibujarD){
             if(this.jugador.tienePincel) {
-                var bloque = new Bloque(imagenes.bloque_tierra, this.jugador.x + 15, this.jugador.y - this.jugador.alto);
+                var bloque = new Bloque(imagenes.bloque_pincel, this.jugador.x + 15, this.jugador.y - this.jugador.alto);
                 bloque.y = bloque.y - bloque.alto / 2;
                 var hayChoque = false;
 
@@ -478,7 +478,7 @@ class GameLayer extends Layer {
 
 
         if(controles.dibujarI){
-            var bloque = new Bloque(imagenes.bloque_tierra, this.jugador.x - 15, this.jugador.y - this.jugador.alto);
+            var bloque = new Bloque(imagenes.bloque_pincel, this.jugador.x - 15, this.jugador.y - this.jugador.alto);
             bloque.y = bloque.y - bloque.alto / 2;
             var hayChoque = false;
 
