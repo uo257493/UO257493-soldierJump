@@ -89,8 +89,31 @@ class GameLayer extends Layer {
                 this.espacio
                     .eliminarCuerpoDinamico(this.disparosCanon[i]);
                 this.disparosCanon.splice(i, 1);
+                i--;
             }
         }
+
+
+        // colisiones , cañon - plataforma
+        //Se ponen antes de añadirlos por que de otra manera, como el disparo siempre va a estar sobre un bloque
+        //El bloque y el disparo aparecerian antes de haberse dibujado
+        for (var i=0; i < this.disparosCanon.length; i++){
+            for(var j = 0; j < this.bloques.length; j++){
+                if(this.disparosCanon[i] != null && this.bloques[j] != null){
+                    if(this.disparosCanon[i].saltaSobre(this.bloques[j])){
+                        this.espacio
+                            .eliminarCuerpoEstatico(this.bloques[j]);
+                        this.bloques.splice(j, 1);
+                        this.espacio
+                            .eliminarCuerpoDinamico(this.disparosCanon[i]);
+                        this.disparosCanon.splice(i, 1);
+                        i--;
+
+                    }
+                }
+            }
+        }
+
 
 
         for (var i=0; i < this.enemigos.length; i++){
@@ -104,9 +127,11 @@ class GameLayer extends Layer {
 
             if(this.enemigos[i] != null && this.enemigos[i].tieneCanon() && this.enemigos[i].estado == estados.moviendo){
                 var nDisparo = this.enemigos[i].disparar();
-                if(nDisparo != null && nDisparo.estaEnPantalla()) {
+                if(nDisparo != null && nDisparo.estaEnPantalla() ) {
                     this.espacio.agregarCuerpoDinamico(nDisparo);
+                    console.log("LO METEMOS")
                     this.disparosCanon.push(nDisparo);
+                    console.log("ACAAA "+ this.disparosCanon.length)
                 }
             }
         }
@@ -157,7 +182,7 @@ class GameLayer extends Layer {
                 !this.disparosCanon[i].estaEnPantalla()){
 
                 this.espacio
-                    .eliminarCuerpoDinamico(this.disparosCanon[i]);
+                  .eliminarCuerpoDinamico(this.disparosCanon[i]);
 
                 this.disparosCanon.splice(i, 1);
                 i=i-1;
@@ -309,24 +334,6 @@ class GameLayer extends Layer {
 
         }
 
-        // colisiones , cañon - plataforma
-        for (var i=0; i < this.disparosCanon.length; i++){
-           for(var j = 0; j < this.bloques.length; j++){
-               if(this.disparosCanon[i] != null && this.bloques[j] != null){
-                   if(this.disparosCanon[i].saltaSobre(this.bloques[j])){
-                       this.espacio
-                           .eliminarCuerpoEstatico(this.bloques[j]);
-                       this.bloques.splice(j, 1);
-                       this.espacio
-                           .eliminarCuerpoDinamico(this.disparosCanon[i]);
-                       this.disparosCanon.splice(i, 1);
-
-
-                   }
-               }
-           }
-        }
-
 
 
     }
@@ -374,7 +381,10 @@ class GameLayer extends Layer {
                 this.disparosEnemigo[i].dibujar(this.scrollY);
         }
 
+
+
         for (var i=0; i < this.disparosCanon.length; i++) {
+
             if(this.disparosCanon[i] != null)
                 this.disparosCanon[i].dibujar(this.scrollY);
         }

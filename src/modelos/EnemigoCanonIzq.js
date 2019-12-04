@@ -11,7 +11,7 @@ class EnemigoCanonIzq extends EnemigoBase {
         if ( this.tiempoDisparo == 0) {
             // reiniciar Cadencia
             this.tiempoDisparo = this.cadenciaDisparo;
-            var disparo = new DisparoCañon(this.x, this.y, -5);
+            var disparo = new DisparoCañon(this.x - this.ancho*2/3, this.y, -5);
             if ( this.vx <0 ){
                 disparo.vx = disparo.vx*-1; //invertir
             }
