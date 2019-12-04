@@ -129,9 +129,7 @@ class GameLayer extends Layer {
                 var nDisparo = this.enemigos[i].disparar();
                 if(nDisparo != null && nDisparo.estaEnPantalla() ) {
                     this.espacio.agregarCuerpoDinamico(nDisparo);
-                    console.log("LO METEMOS")
                     this.disparosCanon.push(nDisparo);
-                    console.log("ACAAA "+ this.disparosCanon.length)
                 }
             }
         }
@@ -249,11 +247,19 @@ class GameLayer extends Layer {
         }
 
     for(var i=0; i< this.recolectables.length; i++){
-        if(this.recolectables[i] != null && this.recolectables[i].esFuror && this.jugador.colisiona(this.recolectables[i])){
-            this.jugador.activarFuror();
-            this.espacio.eliminarCuerpoDinamico(this.recolectables[i]);
-            this.recolectables.splice(i, 1);
-            i--;
+        if(this.recolectables[i] != null &&  this.jugador.colisiona(this.recolectables[i])){
+           if(this.recolectables[i].esFuror) {
+               this.jugador.activarFuror();
+               this.espacio.eliminarCuerpoDinamico(this.recolectables[i]);
+               this.recolectables.splice(i, 1);
+               i--;
+           }
+            if(this.recolectables[i].esPincel) {
+                this.jugador.asignarPincel();
+                this.espacio.eliminarCuerpoDinamico(this.recolectables[i]);
+                this.recolectables.splice(i, 1);
+                i--;
+            }
         }
     }
 
@@ -451,6 +457,43 @@ class GameLayer extends Layer {
 
         }
 
+        if(controles.dibujarD){
+            if(this.jugador.tienePincel) {
+                var bloque = new Bloque(imagenes.bloque_tierra, this.jugador.x + 15, this.jugador.y - this.jugador.alto);
+                bloque.y = bloque.y - bloque.alto / 2;
+                var hayChoque = false;
+
+                for(var i = 0; i < this.bloques.length; i++){
+                    if(this.bloques[i].colisiona(bloque))
+                        hayChoque = true;
+                }
+                if(!hayChoque) {
+                    this.bloques.push(bloque);
+                    this.espacio.agregarCuerpoEstatico(bloque);
+                    this.jugador.tienePincel = false;
+                }
+            }
+
+        }
+
+
+        if(controles.dibujarI){
+            var bloque = new Bloque(imagenes.bloque_tierra, this.jugador.x - 15, this.jugador.y - this.jugador.alto);
+            bloque.y = bloque.y - bloque.alto / 2;
+            var hayChoque = false;
+
+            for(var i = 0; i < this.bloques.length; i++){
+                if(this.bloques[i].colisiona(bloque))
+                    hayChoque = true;
+            }
+            if(!hayChoque) {
+                this.bloques.push(bloque);
+                this.espacio.agregarCuerpoEstatico(bloque);
+                this.jugador.tienePincel = false;
+            }
+
+        }
+
     }
 
 
@@ -537,15 +580,16 @@ class GameLayer extends Layer {
                 var recolectable = new Recolectable(x,y, imagenes.icono_furor, false, true);
                 recolectable.y = recolectable.y - recolectable.alto/2;
                 // modificación para empezar a contar desde el suelo
+                recolectable.y -= recolectable.alto/2;
                 this.recolectables.push(recolectable);
                 this.espacio.agregarCuerpoDinamico(recolectable);
                 break;
-            case "W":
-                var bloque = new BloqueHielo(imagenes.bloque_hielo, x,y);
-                bloque.y = bloque.y - bloque.alto/2;
+            case "P":
+                var pincel = new Recolectable(x, y, imagenes.icono_pincel, true, false);
+                pincel.y = pincel.y - pincel.alto/2;
                 // modificación para empezar a contar desde el suelo
-                this.bloquesHielo.push(bloque);
-                this.espacio.agregarCuerpoEstatico(bloque);
+                this.recolectables.push(pincel);
+                this.espacio.agregarCuerpoDinamico(pincel);
                 break;
             case "A":
                 var av = new Avion(x,y);
@@ -604,6 +648,7 @@ class GameLayer extends Layer {
             controles.moverY = 0;
         }
     }
+
 
 
 }

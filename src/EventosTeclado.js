@@ -27,6 +27,14 @@ function onKeyDown( event) {
             case 37:
                 controles.moverX = -1;
                 break;
+            case 68:
+                //Tecla D
+                controles.dibujarD = true;
+                break;
+            case 71:
+                //Tecla I
+                controles.dibujarI = true;
+                break;
         }
 
     }
@@ -61,6 +69,14 @@ function onKeyUp( event) {
             if ( controles.moverX == -1 ){
                 controles.moverX = 0;
             }
+            break;
+        case 68:
+            //Tecla D
+            controles.dibujarD = false;
+            break;
+        case 71:
+            //Tecla I
+            controles.dibujarI = false;
             break;
     }
 

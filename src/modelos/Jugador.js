@@ -13,6 +13,7 @@ class Jugador extends Modelo {
         this.cadenciaDisparo = 24;
         this.tiempoDisparo = 0;
 
+        this.tienePincel = false;
         // Animaciones
         this.aIdleDerecha = new Animacion(imagenes.soldado_idle_derecha,
             this.ancho, this.alto, 6, 7);
@@ -173,5 +174,8 @@ class Jugador extends Modelo {
     }
 
 
+    asignarPincel(){
+        this.tienePincel = true;
+    }
 
 }

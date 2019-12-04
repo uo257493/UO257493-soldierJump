@@ -10,6 +10,7 @@ var imagenes = {
     soldado_disparar_izquierda:"res/soldado_disparo_izquierda.png",
     furor: "res/soldado_furor.png",
     icono_furor: "res/furor.png",
+    icono_pincel: "res/pincel.png",
     jugador : "res/jugador.png",
     fondo : "res/fondo.png",
     enemigo_derecha : "res/enemigo_derecha.png",
