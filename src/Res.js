@@ -44,6 +44,8 @@ var imagenes = {
     pad :"res/pad.png",
     boton_disparo : "res/boton_disparo.png",
     boton_salto : "res/boton_salto.png",
+    boton_pincel_d : "res/boton_pincel_d.png",
+    boton_pincel_i : "res/boton_pincel_i.png",
     boton_pausa : "res/boton_pausa.png",
     menu_fondo : "res/menu_fondo.png",
     boton_jugar : "res/boton_jugar.png",

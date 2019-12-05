@@ -27,12 +27,12 @@ function onKeyDown( event) {
             case 37:
                 controles.moverX = -1;
                 break;
-            case 68:
-                //Tecla D
+            case 83:
+                //Tecla S para PINTAR a la dcha
                 controles.dibujarD = true;
                 break;
-            case 71:
-                //Tecla I
+            case 65:
+                //Tecla A para pintar a la izq
                 controles.dibujarI = true;
                 break;
         }
@@ -70,12 +70,12 @@ function onKeyUp( event) {
                 controles.moverX = 0;
             }
             break;
-        case 68:
-            //Tecla D
+        case 83:
+            //Tecla S para pintar a la dcha
             controles.dibujarD = false;
             break;
-        case 71:
-            //Tecla I
+        case 65:
+            //Tecla A para pintar a la Izq
             controles.dibujarI = false;
             break;
     }

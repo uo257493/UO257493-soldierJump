@@ -13,8 +13,11 @@ class GameLayer extends Layer {
     iniciar() {
         this.espacio = new Espacio(1);
 
-        this.botonSalto = new Boton(imagenes.boton_salto,480*0.9,320*0.55);
-        this.botonDisparo = new Boton(imagenes.boton_disparo,480*0.75,320*0.83);
+        this.botonSalto = new Boton(imagenes.boton_salto,480*0.9,320*0.62);
+        this.botonPincelD = new Boton(imagenes.boton_pincel_d,480*0.9,320*0.90);
+        this.botonPincelI = new Boton(imagenes.boton_pincel_i,480*0.75,320*0.62);
+        this.botonDisparo = new Boton(imagenes.boton_disparo,480*0.75,320*0.90);
+
         this.pad = new Pad(480*0.14,320*0.8);
 
         this.ps = null;
@@ -414,6 +417,8 @@ class GameLayer extends Layer {
         if ( !this.pausa && entrada == entradas.pulsaciones) {
             this.botonDisparo.dibujar();
             this.botonSalto.dibujar();
+            this.botonPincelD.dibujar();
+            this.botonPincelI.dibujar();
             this.pad.dibujar();
         }
 
@@ -458,40 +463,14 @@ class GameLayer extends Layer {
         }
 
         if(controles.dibujarD){
-            if(this.jugador.tienePincel) {
-                var bloque = new Bloque(imagenes.bloque_pincel, this.jugador.x + 15, this.jugador.y - this.jugador.alto);
-                bloque.y = bloque.y - bloque.alto / 2;
-                var hayChoque = false;
 
-                for(var i = 0; i < this.bloques.length; i++){
-                    if(this.bloques[i].colisiona(bloque))
-                        hayChoque = true;
-                }
-                if(!hayChoque) {
-                    this.bloques.push(bloque);
-                    this.espacio.agregarCuerpoEstatico(bloque);
-                    this.jugador.tienePincel = false;
-                }
-            }
+            this.dibujarBloqueD();
 
         }
 
 
         if(controles.dibujarI){
-            var bloque = new Bloque(imagenes.bloque_pincel, this.jugador.x - 15, this.jugador.y - this.jugador.alto);
-            bloque.y = bloque.y - bloque.alto / 2;
-            var hayChoque = false;
-
-            for(var i = 0; i < this.bloques.length; i++){
-                if(this.bloques[i].colisiona(bloque))
-                    hayChoque = true;
-            }
-            if(!hayChoque) {
-                this.bloques.push(bloque);
-                this.espacio.agregarCuerpoEstatico(bloque);
-                this.jugador.tienePincel = false;
-            }
-
+            this.dibujarBloqueI();
         }
 
     }
@@ -604,7 +583,8 @@ class GameLayer extends Layer {
         // Suponemos botones no estan pulsados
         this.botonDisparo.pulsado = false;
         this.botonSalto.pulsado = false;
-
+        this.botonPincelI.pulsado = false;
+        this.botonPincelD.pulsado = false;
         // suponemos que el pad está sin tocar
         controles.moverX = 0;
 
@@ -635,6 +615,18 @@ class GameLayer extends Layer {
                     controles.moverY = 1;
                 }
             }
+             if (this.botonPincelD.contienePunto(pulsaciones[i].x , pulsaciones[i].y) ){
+                this.botonPincelD.pulsado = true;
+                if ( pulsaciones[i].tipo == tipoPulsacion.inicio) {
+                    this.dibujarBloqueD()
+                }
+            }
+             if (this.botonPincelI.contienePunto(pulsaciones[i].x , pulsaciones[i].y) ){
+                this.botonPincelI.pulsado = true;
+                if ( pulsaciones[i].tipo == tipoPulsacion.inicio) {
+                    this.dibujarBloqueI()
+                }
+            }
 
         }
 
@@ -649,6 +641,40 @@ class GameLayer extends Layer {
         }
     }
 
+    dibujarBloqueD(){
+        if(this.jugador.tienePincel) {
+            var bloque = new Bloque(imagenes.bloque_pincel, this.jugador.x + 15, this.jugador.y - this.jugador.alto);
+            bloque.y = bloque.y - bloque.alto / 2;
+            var hayChoque = false;
 
+            for(var i = 0; i < this.bloques.length; i++){
+                if(this.bloques[i].colisiona(bloque))
+                    hayChoque = true;
+            }
+            if(!hayChoque) {
+                this.bloques.push(bloque);
+                this.espacio.agregarCuerpoEstatico(bloque);
+                this.jugador.tienePincel = false;
+            }
+        }
+    }
+
+    dibujarBloqueI(){
+        if(this.jugador.tienePincel) {
+            var bloque = new Bloque(imagenes.bloque_pincel, this.jugador.x - 15, this.jugador.y - this.jugador.alto);
+            bloque.y = bloque.y - bloque.alto / 2;
+            var hayChoque = false;
+
+            for (var i = 0; i < this.bloques.length; i++) {
+                if (this.bloques[i].colisiona(bloque))
+                    hayChoque = true;
+            }
+            if (!hayChoque) {
+                this.bloques.push(bloque);
+                this.espacio.agregarCuerpoEstatico(bloque);
+                this.jugador.tienePincel = false;
+            }
+        }
+    }
 
 }
