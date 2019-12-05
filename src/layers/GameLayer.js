@@ -2,10 +2,7 @@ class GameLayer extends Layer {
 
     constructor() {
         super();
-        this.puntoSalva = new Object();
-        this.puntoSalva.x = 0;
-        this.puntoSalva.y = 0;
-        this.puntoSalva.activo = false;
+
 
         this.iniciar();
     }
@@ -21,10 +18,8 @@ class GameLayer extends Layer {
 
         this.pad = new Pad(480*0.14,320*0.8);
 
-        this.ps = null;
         this.scrollY = 0;
         this.bloques = [];
-        this.bloquesHielo = [];
         this.aviones = [];
         this.recolectables = [];
 
@@ -46,10 +41,7 @@ class GameLayer extends Layer {
 
         this.cargarMapa("res/"+nivelActual+".txt");
         this.vidas = new Texto(this.jugador.vida,480*0.8,320*0.07 );
-        if(this.puntoSalva.activo){
-            this.jugador.x = this.puntoSalva.x;
-            this.jugador.y = this.puntoSalva.y;
-        }
+
     }
 
     actualizar (){
@@ -60,7 +52,6 @@ class GameLayer extends Layer {
 
         if ( this.nube.colisiona(this.jugador)){
             nivelActual++;
-            this.puntoSalva.activo = false;
             if (nivelActual > nivelMaximo){
                 nivelActual = 0;
             }
@@ -268,22 +259,7 @@ class GameLayer extends Layer {
     }
 
 
-        // colisiones derretir hielo
-        for (var i=0; i < this.bloquesHielo.length; i++){
 
-            if(this.bloquesHielo[i].tieneEncima(this.jugador) && !this.bloquesHielo[i].pisado){
-                this.bloquesHielo[i].pisado = true;
-            }
-            if(this.bloquesHielo[i].pisado){
-                this.bloquesHielo[i].vida --;
-            }
-
-            if(this.bloquesHielo[i].vida <= 0){
-                this.espacio.eliminarCuerpoEstatico(this.bloquesHielo[i]);
-                this.bloquesHielo.splice(i, 1);
-                i--;
-            }
-        }
 
 
 
@@ -349,11 +325,7 @@ class GameLayer extends Layer {
     }
 
     calcularScroll(){
-        // limite abajo
-       /* if ( this.jugador.y > 320 * 0.3) {
-            this.scrollY = this.jugador.y - 320 * 0.3;
 
-        }*/
 
         if ( this.jugador.y < this.altoMapa - 320 * 0.3 ) {
             if (this.jugador.y - this.scrollY < 320 * 0.3)
@@ -370,9 +342,6 @@ class GameLayer extends Layer {
         this.fondo.dibujar();
         for (var i=0; i < this.bloques.length; i++){
             this.bloques[i].dibujar(this.scrollY);
-        }
-        for (var i=0; i < this.bloquesHielo.length; i++){
-            this.bloquesHielo[i].dibujar(this.scrollY);
         }
 
         for (var i=0; i < this.aviones.length; i++){
@@ -399,8 +368,7 @@ class GameLayer extends Layer {
                 this.disparosCanon[i].dibujar(this.scrollY);
         }
 
-        if(this.ps != null)
-            this.ps.dibujar(this.scrollY);
+
 
         this.jugador.dibujar(this.scrollY);
         for (var i=0; i < this.enemigos.length; i++){
@@ -486,7 +454,12 @@ class GameLayer extends Layer {
             var lineas = texto.split('\n');
             this.anchoMapa = (lineas[0].length-1) * 40;
             this.altoMapa = (lineas.length-1) * 32;
-            this.scrollY = this.altoMapa *0.6;
+            console.log(this.altoMapa + "**")
+            if(this.altoMapa > 1000)
+                this.scrollY = this.altoMapa *0.8;
+            else{
+                this.scrollY = this.altoMapa *0.6;
+            }
             for (var i = 0; i < lineas.length; i++){
                 var linea = lineas[i];
 
@@ -655,7 +628,7 @@ class GameLayer extends Layer {
             if(!hayChoque) {
                 this.bloques.push(bloque);
                 this.espacio.agregarCuerpoEstatico(bloque);
-                this.jugador.tienePincel = false;
+                this.jugador.desasignaPincel();
             }
         }
     }
@@ -673,7 +646,7 @@ class GameLayer extends Layer {
             if (!hayChoque) {
                 this.bloques.push(bloque);
                 this.espacio.agregarCuerpoEstatico(bloque);
-                this.jugador.tienePincel = false;
+                this.jugador.desasignaPincel();
             }
         }
     }

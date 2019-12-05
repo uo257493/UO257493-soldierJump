@@ -6,6 +6,7 @@ class Jugador extends Modelo {
         this.vida = 3;
         this.orientacion = orientaciones.derecha;
         this.vidaFuror = 50;
+        this.nPinceles = 0;
         this.vx = 0; // velocidadX
         this.vy = 0; // velocidadY
         this.yDeFuror = 0;
@@ -176,7 +177,14 @@ class Jugador extends Modelo {
 
 
     asignarPincel(){
+        this.nPinceles++;
         this.tienePincel = true;
+    }
+    desasignaPincel(){
+        this.nPinceles --;
+        if(this.nPinceles == 0){
+            this.tienePincel = false;
+        }
     }
 
 }
