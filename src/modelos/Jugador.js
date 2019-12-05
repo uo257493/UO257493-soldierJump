@@ -137,6 +137,7 @@ class Jugador extends Modelo {
             // reiniciar Cadencia
             this.estado = estados.disparando;
             this.tiempoDisparo = this.cadenciaDisparo;
+            reproducirEfecto(efectos.disparo);
             var disparo = new DisparoJugador(this.x, this.y);
             if ( this.orientacion == orientaciones.izquierda ){
                 disparo.vx = disparo.vx*-1; //invertir

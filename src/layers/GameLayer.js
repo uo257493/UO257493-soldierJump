@@ -11,6 +11,7 @@ class GameLayer extends Layer {
     }
 
     iniciar() {
+        reproducirMusica();
         this.espacio = new Espacio(1);
 
         this.botonSalto = new Boton(imagenes.boton_salto,480*0.9,320*0.62);
