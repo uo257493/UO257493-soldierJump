@@ -454,7 +454,6 @@ class GameLayer extends Layer {
             var lineas = texto.split('\n');
             this.anchoMapa = (lineas[0].length-1) * 40;
             this.altoMapa = (lineas.length-1) * 32;
-            console.log(this.altoMapa + "**")
             if(this.altoMapa > 1000)
                 this.scrollY = this.altoMapa *0.8;
             else{
